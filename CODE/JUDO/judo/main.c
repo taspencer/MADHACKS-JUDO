@@ -59,12 +59,13 @@ int main(){
 		if(fight1.round == 15){
 			printf("TIME OUT\n");
 		}
-
+		
 		printf("PLAY AGAIN?\n1. YES\n2. NO\n");
 		scanf(" %c", &choice);
 		if(choice == 'n'){
 			done = 1;
 		}
+		 
 	}
 }
 
@@ -530,7 +531,7 @@ int gripfight(player * player1, player * player2){
 				player1->grip == 3 && player2->grip == 2)
 		{
 			printf("PLAYER1 ADVANTAGE\n")	;
-			player1->dominance = 3;
+			player1->dominance = 4;
 			player2->dominance = 1;
 				
 		}else if(player2->grip == 1 && player1->grip == 3 ||
