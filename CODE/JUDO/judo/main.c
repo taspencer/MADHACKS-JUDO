@@ -15,6 +15,8 @@ typedef struct player{
 	int sweepVuln;
 	int attack;
 	int thrown;
+	int powerUsed;
+	
 }player;
 
 typedef struct fight{
@@ -122,12 +124,19 @@ int debug(player * player1, player * player2, fight * fight1){
 
 int displayResults(player * player1, player * player2, fight * fight1){
 	
+	player winner1;
+	player loser1;
+	int winner;
+	
+	
 	if(player1->thrown && !player2->thrown){
-		printf("IPPON FOR PLAYER 2\n");
+		printf("IPPON FOR PLAYER 2 BY ");
 		ippon = 1;
+		winner = 2;
 	}else if(!player1->thrown && player2->thrown){
-		printf("IPPON FOR PLAYER 1\n");
+		printf("IPPON FOR PLAYER 1 BY ");
 		ippon = 1;
+		winner = 1;
 	}else{
 	
 		switch(player1->nextThrowVuln){
@@ -148,6 +157,46 @@ int displayResults(player * player1, player * player2, fight * fight1){
 			default: printf("PLAYER 2 IN GRAVE DANGER\n");
 		}
 	}
+	
+	if(ippon){
+		if(winner == 1){
+			winner1 = * player1;
+			loser1 = * player2;
+		}else{
+			winner1 = * player2;
+			loser1 = * player1;
+		}
+		if(winner1.powerUsed){
+				printf("POWER ");
+		}
+		
+		if(abs(winner1.x)){
+			switch(winner1.attack){
+				case 1: if(abs(loser1.y)){
+							printf("SASAE TSURIKOMI ASHI\n");
+						}else{
+							printf("DE ASHI BARAI\n");
+						}	
+						break;
+				case 2: printf("O GOSHI\n");
+						break;
+			}
+		}else if(winner1.y == 1){
+			switch(winner1.attack){
+				case 1: printf("O UCHI GARI\n");
+						break;
+				case 2: printf("OSOTO GARI\n");
+						break;
+			}
+		}else{
+			switch(winner1.attack){
+				case 1: printf("KO UCHI GARI\n");
+						break;
+				case 2: printf("SEOI NAGE\n");
+						break;
+			}
+		}
+	}
 }
 
 int attack(player * player1, player * player2, fight * fight1){
@@ -159,6 +208,8 @@ int attack(player * player1, player * player2, fight * fight1){
 	
 	player1->nextThrowVuln = 0;
 	player2->nextThrowVuln = 0;
+	player1->powerUsed = 0;
+	player2->powerUsed = 0;
 	
 	if(!player1->computer){
 		printf("PRESS 1 TO SWEEP, 2 TO THROW, OR 3 TO COUNTER THROW\n");
@@ -279,6 +330,9 @@ int attack(player * player1, player * player2, fight * fight1){
 	}
 	player1->power = player1->power - power1 + 1;
 	player2->power = player2->power - power2 + 1;
+	
+	player1->powerUsed = power1 - 1;
+	player2->powerUsed = power2 - 1;
 }
 
 int move(player * player1, player * player2, fight * fight1){
